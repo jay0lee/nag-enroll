@@ -4,18 +4,24 @@ chrome.runtime.getPlatformInfo(function (info) {
         return
     }
     if ( typeof chrome.enterprise == "undefined" ) {
-        handle_id('not available');
+        console.log("chrome.enterprise not available. Nagging.");
+        schedule_nag();
     } else if ( typeof chrome.enterprise.deviceAttributes == "undefined" ) {
-        handle_id('not available');
+        console.log("chrome.enterprise.deviceAttributes not available. Nagging.");
+        schedule_nag();
     } else if ( typeof chrome.enterprise.deviceAttributes.getDirectoryDeviceId == "undefined" ) {
-        handle_id('not available');
+        console.log("chrome.enterprise.deviceAttributes.getDirectoryDeviceID() not available. Nagging.");
+        schedule_nag();
     } else {
+        console.log("getDirectoryDeviceId() available. Calling it."));
         chrome.enterprise.deviceAttributes.getDirectoryDeviceId(handle_id);
     }
 });
 
 function handle_id(id) {
-    if ( id === 'not available' ) {
+    // Device ID is a uuid4 and should be at least 36 chars long.
+    if ( id.length < 36 ) {
+	console.log("expected a 36 char device ID, got: '" + id + ". Nagging.");
         schedule_nag()
     } else {
         console.log("We are enrolled with device id: " + id + " nothing else to do here.");
