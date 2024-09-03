@@ -13,7 +13,7 @@ chrome.runtime.getPlatformInfo(function (info) {
         console.log("chrome.enterprise.deviceAttributes.getDirectoryDeviceID() not available. Nagging.");
         schedule_nag();
     } else {
-        console.log("getDirectoryDeviceId() available. Calling it."));
+        console.log("getDirectoryDeviceId() available. Calling it.");
         chrome.enterprise.deviceAttributes.getDirectoryDeviceId(handle_id);
     }
 });
